@@ -1,0 +1,221 @@
+\documentclass[11pt,a4paper,oneside]{article}
+
+%%% Работа с русским языком
+\usepackage{cmap}					% поиск в PDF
+\usepackage{mathtext} 				% русские буквы в фомулах
+\usepackage[T2A]{fontenc}			% кодировка
+\usepackage[utf8]{inputenc}			% кодировка исходного текста
+\usepackage[english,russian]{babel}	% локализация и переносы
+
+\usepackage{blindtext}
+
+\usepackage{fancyhdr}
+
+\usepackage{lipsum}
+\usepackage{etoolbox}
+
+% Code in Latex
+\usepackage{listings}
+
+%%% Дополнительная работа с математикой
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools} % AMS
+\usepackage{icomma} % "Умная" запятая: $0,2$ --- число, $0, 2$ --- перечисление
+
+\title{Свойства и типы нечетких бинарных отношений}
+\date{2020}
+\author{Снопов П.М.}
+
+\newenvironment{problem}{
+	\medskip
+	\begin{problem-internal}
+	}{
+	\end{problem-internal}
+}
+
+\newenvironment{solution}{
+	\begin{proof}[Решение]
+		\vspace{-8px}
+		\setlength{\parskip}{4px}
+		\setlength{\parindent}{0px}
+	}{
+	\end{proof}
+}
+
+\newtheorem{problem-internal}{}
+\newcommand{\+}{$\boldsymbol{+}$}
+
+\begin{document}
+	\maketitle
+	
+	%{\it Замечание:} В данном задании все дальнейшие вычисления были сделаны с помощью Python. %Прилагаю файл, где все вычисления описаны: 
+	
+	
+	
+	\begin{problem}
+		Определите, какие из перечисленных ниже нечетких бинарных отношений симметричны,
+		антисимметричны, совеCршенно антисимметричны, рефлексивны, транзитивны:
+		\begin{table}[!htbp]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|}
+				\hline
+				$R_1$ & a & b & c   & d   & e   \\ \hline
+				a     & 0 & 1 & 1   & 1   & 1   \\ \hline
+				b     & 0 & 0 & 0.9 & 0.7 & 0.3 \\ \hline
+				c     & 0 & 0 & 0   & 0.7 & 0.3 \\ \hline
+				d     & 0 & 0 & 0   & 0   & 0.3 \\ \hline
+				e     & 0 & 0 & 0   & 0   & 0   \\ \hline
+			\end{tabular}
+			\quad
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|}
+				\hline
+				$R_2$ & a   & b   & c   & d   & e   \\ \hline
+				a     & 0   & 0.3 & 1   & 0   & 0.5 \\ \hline
+				b     & 0.3 & 0.2 & 0   & 0.8 & 0.1 \\ \hline
+				c     & 1   & 0   & 0   & 0.2 & 1   \\ \hline
+				d     & 0   & 0.8 & 0.2 & 1   & 0.4 \\ \hline
+				e     & 0.5 & 0.1 & 1   & 0.4 & 0.4 \\ \hline
+			\end{tabular}
+		\end{table}
+		\begin{table}[!htbp]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|}
+				\hline
+				$R_3$ & a & b   & c   & d & e   \\ \hline
+				a     & 1 & 0.5 & 0.5 & 0 & 0.7 \\ \hline
+				b     & 0 & 1   & 0.7 & 0 & 0   \\ \hline
+				c     & 0 & 1   & 1   & 0 & 0   \\ \hline
+				d     & 0 & 0.3 & 0.3 & 1 & 0   \\ \hline
+				e     & 1 & 0.5 & 0.5 & 0 & 1   \\ \hline
+			\end{tabular}
+			\quad
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|}
+				\hline
+				$R_4$ & a   & b & c   & d   & e   \\ \hline
+				a     & 0   & 0 & 0.3 & 0.2 & 0   \\ \hline
+				b     & 0.6 & 1 & 0.8 & 1   & 0.2 \\ \hline
+				c     & 0.2 & 0 & 1   & 0.8 & 0.3 \\ \hline
+				d     & 0   & 0 & 0   & 1   & 0   \\ \hline
+				e     & 1   & 0 & 0.2 & 0.6 & 0   \\ \hline
+			\end{tabular}
+		\end{table}
+	\end{problem}
+	
+	\begin{solution}
+		Построим таблицу, в которой укажем, какие отношения обладают вышеобозначенными свойствами. Обозначим за $С$ -- симметричность, $АС$ -- антисимметричность, $САС$ -- совершенно антисимметричность, $Р$ -- рефлексивность и $Т$ -- транзитивность:
+		\begin{table}[!htbp]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|}
+				\hline
+						& $R_1$ & $R_2$ & $R_3$ & $R_4$ \\ \hline
+				$С$   	&       &   \+  &       &       \\ \hline
+				$АС$  	&   \+  &       &  \+   &  \+   \\ \hline
+				$САС$ 	&   \+  &       &       &       \\ \hline
+				$Р$   	&       &       &   \+  &       \\ \hline
+				$Т$   	&   \+  &       &   \+  &       \\ \hline
+			\end{tabular}
+		\end{table}
+	
+	\end{solution}
+	\begin{problem}
+		Найдите максминное транзитивное замыкание любых двух отношений из 1 задания.
+	\end{problem}
+	\begin{solution}
+		Найдем транзитивные замыкания первого и четвертого отношений:
+		\begin{table}[!hbtp]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|}
+				\hline
+				$\hat{R}_1$ & a & b & c   & d   & e   \\ \hline
+				a     & 0 & 1 & 1   & 1   & 1   \\ \hline
+				b     & 0 & 0 & 0.9 & 0.7 & 0.3 \\ \hline
+				c     & 0 & 0 & 0   & 0.7 & 0.3 \\ \hline
+				d     & 0 & 0 & 0   & 0   & 0.3 \\ \hline
+				e     & 0 & 0 & 0   & 0   & 0   \\ \hline
+			\end{tabular}
+			\quad
+			\begin{tabular}{|c|c|c|c|c|c|}
+				\hline
+				$\hat{R}_4$ & a   & b & c   & d   & e   \\ \hline
+				a     & 0.3 & 0.0 & 0.3 & 0.3 & 0.3 \\ \hline
+				b     & 0.6 & 1.0 & 0.8 & 1.0 & 0.3 \\ \hline
+				c     & 0.3 & 0.0 & 1.0 & 0.8 & 0.3 \\ \hline
+				d     & 0.0 & 0.0 & 0.0 & 1.0 & 0.0 \\ \hline
+				e     & 1.0 & 0.0 & 0.3 & 0.6 & 0.3 \\ \hline
+			\end{tabular}
+		\end{table}
+		\newline
+		Так как $R_1$ транзитивно, то $\hat{R}_1 = R_1$
+	\end{solution}
+
+	\begin{problem}
+		Докажите, что нечеткое отношение $R$, представленное ниже, является предпорядком:
+		\begin{table}[!hbtp]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|c|}
+				\hline
+				$R$ & a & b   & c   & d & e   & f   \\ \hline
+				a   & 1 & 0.7 & 0.2 & 0 & 0.8 & 1   \\ \hline
+				b   & 0 & 1   & 0.2 & 0 & 0   & 0   \\ \hline
+				c   & 0 & 0.5 & 1   & 0 & 0   & 0   \\ \hline
+				d   & 0 & 0.1 & 0.1 & 1 & 0.1 & 0.1 \\ \hline
+				e   & 0 & 0   & 0   & 0 & 1   & 0.8 \\ \hline
+				f   & 0 & 0   & 0   & 0 & 0.8 & 1   \\ \hline
+			\end{tabular}
+		\end{table}
+	\end{problem}
+	\begin{solution}
+		$R$ -- предпорядок, если $R$ рефлексивно и транзитивно. Очевидно, $R$ рефлексивно. Также $R$ транзитивно:
+		\begin{table}[!hbtp]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|c|}
+				\hline
+				$R \circ R$ & a  & b   & c   & d   & e   & f   \\ \hline
+				 a  		&1.0 & 0.7 & 0.2 & 0.0 & 0.8 & 1.0 \\  \hline
+				 b  		&0.0 & 1.0 & 0.2 & 0.0 & 0.0 & 0.0 \\  \hline
+				 c  		&0.0 & 0.5 & 1.0 & 0.0 & 0.0 & 0.0 \\  \hline
+				 d  		&0.0 & 0.1 & 0.1 & 1.0 & 0.1 & 0.1 \\ \hline
+				 e  		&0.0 & 0.0 & 0.0 & 0.0 & 1.0 & 0.8 \\ \hline
+				 f  		&0.0 & 0.0 & 0.0 & 0.0 & 0.8 & 1.0 \\ \hline
+			\end{tabular}
+		\end{table}
+		
+		Значит $R$ -- предпорядок
+	\end{solution}
+	\newpage
+	\begin{problem}
+		 Является ли следующее отношение подобием?
+		 \begin{table}[!hbtp]
+		 	\centering
+		 	\begin{tabular}{|c|c|c|c|c|c|c|}
+		 		\hline
+		 		$R$ & a   & b   & c   & d   & e   & f   \\ \hline
+		 		a   & 1   & 0.1 & 0.1 & 0   & 0   & 0.5 \\ \hline
+		 		b   & 0.1 & 1   & 0.6 & 0   & 0   & 0.1 \\ \hline
+		 		c   & 0.1 & 0.6 & 1   & 0   & 0   & 0.1 \\ \hline
+		 		d   & 0   & 0   & 0   & 1   & 0.3 & 0   \\ \hline
+		 		e   & 0   & 0   & 0   & 0.3 & 1   & 0   \\ \hline
+		 		f   & 0.5 & 0.1 & 0.1 & 0   & 0   & 1   \\ \hline
+		 	\end{tabular}
+		 \end{table}
+	\end{problem}
+	\begin{solution}
+		Отношение $R$ является отношением подобия(отношением эквивалентности), если оно рефлексивно, симметрично и транзитивно. Очевидно, $R$ рефлексивно и симметрично. Проверим транзитивность: 
+		\begin{table}[!hbtp]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|c|}
+				\hline
+				$R \circ R$ & a  &    b& c	 & d   & e	 & f \\ \hline
+				a			&1.0 & 0.1 & 0.1 & 0.0 & 0.0 & 0.5 \\ \hline
+				b			&0.1 & 1.0 & 0.6 & 0.0 & 0.0 & 0.1 \\ \hline
+				c			&0.1 & 0.6 & 1.0 & 0.0 & 0.0 & 0.1 \\ \hline
+				d			&0.0 & 0.0 & 0.0 & 1.0 & 0.3 & 0.0 \\ \hline
+				e			&0.0 & 0.0 & 0.0 & 0.3 & 1.0 & 0.0 \\ \hline
+				f			&0.5 & 0.1 & 0.1 & 0.0 & 0.0 & 1.0 \\ \hline
+			\end{tabular}
+		\end{table}
+	
+		Значит, $R$ -- отношение эквивалентности.
+	\end{solution}
+\end{document}
