@@ -1,0 +1,18 @@
+digraph "" {
+	"a b c d e" -> "a b c";
+	"a b c d e" -> "d e";
+	"a b c" -> "a b c";
+	"a b c" -> "b c";
+	"a b c" -> a;
+	"d e" -> "d e";
+	"d e" -> d;
+	"d e" -> e;
+	"b c" -> "b c";
+	"b c" -> b;
+	"b c" -> c;
+	a -> a;
+	b -> b;
+	c -> c;
+	d -> d;
+	e -> e;
+}

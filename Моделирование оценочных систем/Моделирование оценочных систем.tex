@@ -1,0 +1,241 @@
+\documentclass[11pt,a4paper,oneside]{article}
+
+%%% Работа с русским языком
+\usepackage{cmap}					% поиск в PDF
+\usepackage{mathtext} 				% русские буквы в фомулах
+\usepackage[T2A]{fontenc}			% кодировка
+\usepackage[utf8]{inputenc}			% кодировка исходного текста
+\usepackage[english,russian]{babel}	% локализация и переносы
+
+\usepackage{blindtext}
+
+\usepackage{fancyhdr}
+
+\usepackage{lipsum}
+\usepackage{etoolbox}
+\usepackage{color}
+
+% Code in Latex
+\usepackage{listings}
+\lstset{language=python,%
+	%basicstyle=\color{red},
+	breaklines=true,%
+	morekeywords={matlab2tikz},
+	extendedchars=\true,
+	keywordstyle=\color{blue},%
+	morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+	identifierstyle=\color{black},%
+	stringstyle=\color{mylilas},
+	commentstyle=\color{mygreen},%
+	showstringspaces=false,%without this there will be a symbol in the places where there is a space
+	numbers=left,%
+	numberstyle={\tiny \color{black}},% size of the numbers
+	numbersep=9pt, % this defines how far the numbers are from the text
+	emph=[1]{for,end,break},emphstyle=[1]\color{red}, %some words to emphasise
+	%emph=[2]{word1,word2}, emphstyle=[2]{style},    
+}
+
+%%% Дополнительная работа с математикой
+\usepackage{amsmath,amsfonts,amssymb,amsthm,mathtools} % AMS
+\usepackage{icomma} % "Умная" запятая: $0,2$ --- число, $0, 2$ --- перечисление
+
+\title{Моделирование оценочных систем \protect \\ Вариант 3}
+\date{2020}
+\author{Снопов П.М.}
+
+\pagestyle{plain}
+
+\newenvironment{problem}{
+	\medskip
+	\begin{problem-internal}
+	}{
+	\end{problem-internal}
+}
+
+\newenvironment{solution}{
+	\begin{proof}[Решение]
+		\vspace{-8px}
+		\setlength{\parskip}{4px}
+		\setlength{\parindent}{0px}
+	}{
+	\end{proof}
+}
+
+\newtheorem{problem-internal}{}
+
+\begin{document}
+	\maketitle
+	\begin{problem}
+		Для оценки степени влияния работы телефонного оператора на обращения клиентов в фирмы по изготовлению пластиковых окон проводится исследование качества обслуживания клиентов по следующим критериям: {\bf грамотность речи} (Р) -- до $3$ баллов, {\bf знание ассортимента} (А) -- до $4$ баллов,{\bf помощь клиенту} (П) -- до $4$ баллов, {\bf стрессоустойчивость} (С) -- до $3$ баллов, {\bf доброжелательность} (Д) -- до $3$ баллов, {\bf степень занятости телефонной линии} (ТЛ) -- до $3$ баллов. Оценки представлены в таблице. В каких фирмах лучшие телефонные операторы?
+		\begin{table}[!hbtp]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|c|}
+				\hline
+				Фирма        & Р & А & П & С & Д & ТЛ \\ \hline
+				Новые окна   & 2 & 3 & 2 & 2 & 2 & 1  \\ \hline
+				ЕвроОКНА     & 3 & 4 & 4 & 3 & 3 & 3  \\ \hline
+				Русские окна & 2 & 3 & 1 & 3 & 3 & 1  \\ \hline
+				Горизонт     & 3 & 2 & 2 & 3 & 3 & 2  \\ \hline
+				ViPlast      & 2 & 4 & 1 & 2 & 2 & 2  \\ \hline
+				Velux        & 3 & 3 & 4 & 2 & 2 & 3  \\ \hline
+				Витраж       & 2 & 3 & 3 & 3 & 2 & 2  \\ \hline
+			\end{tabular}
+		\end{table}
+	\end{problem}
+	\begin{solution}
+		Для начала выберем 5 показателей, которые в наибольшей степени влияют на принимаемое решение. Пусть это будут первые 5 показателей: $Р, А, П, С, Д$.
+		\begin{table}[!hbtp]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|}
+				\hline
+				Фирма        & Р & А & П & С & Д  \\ \hline
+				Новые окна   & 2 & 3 & 2 & 2 & 2   \\ \hline
+				ЕвроОКНА     & 3 & 4 & 4 & 3 & 3  \\ \hline
+				Русские окна & 2 & 3 & 1 & 3 & 3  \\ \hline
+				Горизонт     & 3 & 2 & 2 & 3 & 3   \\ \hline
+				ViPlast      & 2 & 4 & 1 & 2 & 2   \\ \hline
+				Velux        & 3 & 3 & 4 & 2 & 2   \\ \hline
+				Витраж       & 2 & 3 & 3 & 3 & 2   \\ \hline
+			\end{tabular}
+		\end{table}
+		\newpage
+		Так как оценки не лежат в $[0,1]$, отнормируем их: так как показатели устроены по принципу "чем больше, тем лучше", то нормировать будем по следующему принципу:
+		\[
+			x_i^{new} = \frac{x_i - x_i^{min}}{x_i^{max} - x_i^{min}}\\
+		\]
+		Получаем следующую таблицу:
+		\begin{table}[!hbtp]
+			\centering
+			\begin{tabular}{|c|c|c|c|c|c|}
+				\hline
+				Фирма        & Р & А & П & С & Д  \\ \hline
+				Новые окна   & 0.0 & 0.5 & 0.3 & 0.0 & 0.0  \\ \hline
+				ЕвроОКНА     &1.0 & 1.0 & 1.0 & 1.0 & 1.0   \\ \hline
+				Русские окна &0.0 & 0.5 & 0.0 & 1.0 & 1.0    \\ \hline
+				Горизонт     & 1.0 & 0.0 & 0.3 & 1.0 & 1.0   \\ \hline
+				ViPlast      & 0.0 & 1.0 & 0.0 & 0.0 & 0.0   \\ \hline
+				Velux        & 1.0 & 0.5 & 1.0 & 0.0 & 0.0   \\ \hline
+				Витраж       & 0.0 & 0.5 & 0.7 & 1.0 & 0.0   \\ \hline
+			\end{tabular}
+		\end{table}
+	\subsection*{Метод парных сравнений}
+	Для решении задачи воспользуемся методом парных сравнений, чтобы определить вес, ассоциированный с каждым показателем. Для этого создадим матрицу парных сравнений:
+	\begin{table}[!hbtp]
+		\centering
+		\begin{tabular}{|c|c|c|c|c|c|}
+			\hline
+			        & Р & А & П & С & Д  \\ \hline
+			Р     & 2.0 & 1.0 & 2.0 & 2.0 & 0.0   \\ \hline
+			А     &1.0 & 0.0 & 2.0 & 2.0 & 1.0 \\ \hline
+			П 	  &0.0 & 0.0 & 2.0 & 0.0 & 2.0 \\ \hline
+			С     & 0.0 & 0.0 & 2.0 & 1.0 & 2.0 \\ \hline
+			Д     & 2.0 & 1.0 & 0.0 & 0.0 & 2.0 \\ \hline
+		\end{tabular}
+	\end{table}
+	Тогда, применяя метод парных сравнений, получаем:
+	\[
+		w = 
+		\begin{pmatrix} 0.26 \\ 0.21 \\ 0.14 \\ 0.17 \\ 0.22 \end{pmatrix}
+	\]
+	Теперь, получив вектор весов, воспользуемся взвешенной операцией агрегирования, например, взвешенным средним:
+	\[
+		S(x,w) = <x,w>,
+	\]
+	где $ <\cdot, \cdot> $ -- скалярное произведение векторов из $\mathbb{R}^k$. В таком случае получаем следующие оценки фирмам:
+	\begin{table}[!hbtp]
+		\centering
+		\begin{tabular}{|c|c|}
+			\hline
+			Фирма & Оценка   \\ \hline
+			Новые окна     & 0.15    \\ \hline
+			ЕвроОКНА     &1.00  \\ \hline
+			Русские окна 	  &0.50  \\ \hline
+			Горизонт     & 0.70  \\ \hline
+			ViPlast     & 0.21  \\ \hline
+			Velux     & 0.50  \\ \hline
+			Витраж     & 0.37  \\ \hline
+		\end{tabular}
+	\end{table}
+	А значит лучший телефонный оператор -- "ЕвроОКНА".
+	\subsection*{Использование OWA-оператора}
+	Теперь решим данную задачу с использованием OWA-оператора. Для построения вектора весов будем использовать функцию квантификации $ Q(x) = x^2 $. Тогда получаем следующий вектор весов:
+	\[
+	w = 
+	\begin{pmatrix} 0.04 \\ 0.12 \\ 0.2 \\ 0.28 \\ 0.36 \end{pmatrix}
+	\]
+	Тогда, упорядочив оценки для каждой фирмы, умножаем их скалярно на вектор весов и получаем следующее ранжирование:
+	\begin{table}[!hbtp]
+		\centering
+		\begin{tabular}{|c|c|}
+			\hline
+			Фирма & Оценка   \\ \hline
+			Новые окна     & 0.27    \\ \hline
+			ЕвроОКНА     &1.00  \\ \hline
+			Русские окна 	  &0.74  \\ \hline
+			Горизонт     & 0.88  \\ \hline
+			ViPlast     & 0.36  \\ \hline
+			Velux     & 0.74  \\ \hline
+			Витраж     & 0.65  \\ \hline
+		\end{tabular}
+	\end{table}
+	А значит лучший телефонный оператор -- снова "ЕвроОКНА".
+	\end{solution}
+	\newpage
+	\begin{problem}
+		Для оценки филиалов фитнес-клуба "Здоровье" экспертами выделены следующие показатели: {\bf опыт работы} (ОР); {\bf плоность населения района} (Н), в котором рсположен филиал; {\bf удобство расположения} (УР); {\bf оценка залов для занятий и тренажерного оборудования} (ЗТ); {\bf стоимость абонемента} (С); {\bf количество дополнительных услуг} (ДУ). Оценки филиалов, полученные в результате экспертного опроса, приведены в таблице. Определите ранжирование филиалов.
+		\begin{table}[!hbtp]
+			\begin{tabular}{|c|c|c|c|c|c|c|}
+				\hline
+				Филиал                        & ОР & Н  & УР & ЗТ & С & ДУ \\ \hline
+				"Автора"                      & VL & H  & L  & M  & M & VH \\ \hline
+				"Кристалл"                    & L  & M  & L  & M  & M & M  \\ \hline
+				"Энергия"                     & H  & L  & M  & H  & H & H  \\ \hline
+				"Здоровый город"              & M  & VH & H  & H  & H & M  \\ \hline
+				"Леди N"                      & H  & M  & VH & H  & M & VH \\ \hline
+				"Университетский"             & M  & M  & H  & M  & L & M  \\ \hline
+				"Академия красоты и здоровья" & M  & L  & M  & H  & M & H  \\ \hline
+				Филиал №6                     & VH & H  & M  & M  & L & M  \\ \hline
+			\end{tabular}
+		\end{table}
+	\end{problem}
+	\begin{solution}
+		Для начала выберем 4 показателей, которые в наибольшей степени влияют на принимаемое решение. Пусть это будут первые 4 показателей: $ОР, Н, УР, ЗТ$, тогда имеем следующую таблицу:
+		\begin{table}[!hbtp]
+			\begin{tabular}{|c|c|c|c|c|}
+				\hline
+				Филиал                        & ОР & Н  & УР & ЗТ  \\ \hline
+				"Автора"                      & VL & H  & L  & M   \\ \hline
+				"Кристалл"                    & L  & M  & L  & M    \\ \hline
+				"Энергия"                     & H  & L  & M  & H    \\ \hline
+				"Здоровый город"              & M  & VH & H  & H    \\ \hline
+				"Леди N"                      & H  & M  & VH & H   \\ \hline
+				"Университетский"             & M  & M  & H  & M    \\ \hline
+				"Академия красоты и здоровья" & M  & L  & M  & H    \\ \hline
+				Филиал №6                     & VH & H  & M  & M    \\ \hline
+			\end{tabular}
+		\end{table}
+		Сформируем вектор весов также, как и формировали вектор весов для OWA-операции(т.е. с использованием функции квантификации $ Q(x) = x^2 $), получим:
+		\[
+		w = 
+		\begin{pmatrix} 0.06 \\ 0.19 \\ 0.31 \\ 0.44 \end{pmatrix}
+		\]
+		Упорядочим для каждого филиала его вектор оценок в соответствии с лингвистической шкалой:
+		$ S = \{ S_0 = VL; S_1 = L; S_2 = M; S_3 = H; S_4 = VH \} $, и применим LOWA-оператор для ранжирования объектов, получим:
+		\begin{table}[!hbtp]
+			\centering
+			\begin{tabular}{|c|c|}
+				\hline
+				Фирма & Оценка   \\ \hline
+				Энергия & VH    \\ \hline
+				Здоровый город &  VH  \\ \hline
+				Леди N & VH  \\ \hline
+				Филиал №6&  VH  \\ \hline
+				Аврора & H \\ \hline
+				Университетский & H  \\ \hline
+				Академия красоты и здоровья & H  \\ \hline
+				Кристалл & M \\ \hline
+			\end{tabular}
+		\end{table}
+		\newline
+	\end{solution}
+\end{document}
