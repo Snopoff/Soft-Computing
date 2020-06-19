@@ -1,0 +1,8 @@
+*.fls
+*.fdb_latexmk
+*.log
+*.aux
+*.synctex.gz
+*.ipynb_checkpoints
+submit
+requirments.txt
