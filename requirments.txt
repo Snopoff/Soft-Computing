@@ -1,6 +1,6 @@
-numpy==1.18.1
-networkx==2.4
-matplotlib==3.2.1
-seaborn==0.10.0
-scipy==1.4.1
+numpy
+networkx
+matplotlib
+seaborn
+scipy
 
